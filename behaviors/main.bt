@@ -7,6 +7,7 @@
         "children": [
             "63a7774a-3a12-450f-aba1-9244c926888a",
             "366e6af2-f67b-487c-bda5-ceb187960c00",
+            "9a41d80f-c94d-454e-86f5-cde52304c801",
             "07902c38-b948-4b62-870e-72ff59bd8784"
         ],
         "decorators": [],
@@ -14,37 +15,6 @@
     },
     "meta": {
         "version": 1
-    },
-    "48dccc45-aaff-499b-814b-e6d9e926b6f6": {
-        "id": "48dccc45-aaff-499b-814b-e6d9e926b6f6",
-        "class": "ExecuteScript",
-        "name": "Set eye position",
-        "options": {
-            "exec": [
-                "() => {",
-                "  jibo.animate.setEyePosition(notepad.x/100,notepad.y/100);",
-                "  jibo.animate.setEyeScale(notepad.scale);",
-                "}"
-            ]
-        },
-        "asset-pack": "core",
-        "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
-        "skipped": false
-    },
-    "96c2fc17-786f-4c44-8bed-cf3dfc988504": {
-        "id": "96c2fc17-786f-4c44-8bed-cf3dfc988504",
-        "class": "TimeoutJs",
-        "name": "",
-        "options": {
-            "getTime": [
-                "() => {",
-                "//    return notepad.delay;",
-                "return 250;",
-                "}"
-            ]
-        },
-        "asset-pack": "core",
-        "parent": "07902c38-b948-4b62-870e-72ff59bd8784"
     },
     "63a7774a-3a12-450f-aba1-9244c926888a": {
         "id": "63a7774a-3a12-450f-aba1-9244c926888a",
@@ -71,9 +41,8 @@
             "84f8b838-fa54-4600-aa56-f35b5625467e"
         ],
         "children": [
-            "c098155a-55d4-4a14-a4c4-9f5e135f810c",
-            "48dccc45-aaff-499b-814b-e6d9e926b6f6",
-            "96c2fc17-786f-4c44-8bed-cf3dfc988504"
+            "e52601f9-2ec2-427e-9416-f33c7b42ec7a",
+            "4e0ddf18-2df1-4fed-9d3a-298a7c66e8d1"
         ]
     },
     "84f8b838-fa54-4600-aa56-f35b5625467e": {
@@ -83,7 +52,7 @@
         "options": {
             "init": [
                 "() => {",
-                "  notepad.orbit_count=-1; //This will go to zero on the first orbit.",
+                "  notepad.orbit_count=0; //This will go to zero on the first orbit.",
                 "}"
             ],
             "conditional": [
@@ -124,26 +93,112 @@
         "parent": 1,
         "skipped": false
     },
-    "c098155a-55d4-4a14-a4c4-9f5e135f810c": {
-        "id": "c098155a-55d4-4a14-a4c4-9f5e135f810c",
-        "class": "ExecuteScript",
-        "name": "Initialize some variables",
+    "9a41d80f-c94d-454e-86f5-cde52304c801": {
+        "id": "9a41d80f-c94d-454e-86f5-cde52304c801",
+        "class": "ExecuteScriptAsync",
+        "name": "Precompute variables per orbit",
         "options": {
             "exec": [
-                "() => {",
-                "  notepad.raw_angle = (notepad.raw_angle+notepad.deg_per_frame)%360;",
-                "  if (notepad.raw_angle == 0) { notepad.orbit_count++; }  ",
-                "  notepad.angle = notepad.raw_angle+notepad.angle_offset;",
-                "  notepad.x = notepad.starting_x*Math.cos(notepad.angle*Math.PI/180);",
-                "  notepad.y = notepad.starting_y*Math.sin(notepad.angle*Math.PI/180);",
-                "  notepad.size = (notepad.starting_y*2*notepad.starting_size-(notepad.starting_y+notepad.y))/(notepad.starting_y*2*notepad.starting_size);",
-                "  notepad.scale = notepad.size * notepad.starting_scale;",
-                "  console.log(notepad.angle,notepad.x,notepad.y,notepad.size,notepad.scale);",
+                "(succeed, fail) => {",
+                "  notepad.orbital_values = new Array;",
+                "  for (let frame=0; frame <notepad.frames; frame++) { ",
+                "    notepad.orbital_values[frame] = {};",
+                "    let angle = (frame*notepad.deg_per_frame)+notepad.angle_offset;",
+                "    notepad.orbital_values[frame].x = notepad.starting_x*Math.cos(angle*Math.PI/180);",
+                "    notepad.orbital_values[frame].y = notepad.starting_y*Math.sin(angle*Math.PI/180);",
+                "    let size = (notepad.starting_y*2*notepad.starting_size-(notepad.starting_y+notepad.orbital_values[frame].y))/(notepad.starting_y*2*notepad.starting_size);",
+                "    notepad.orbital_values[frame].scale = size * notepad.starting_scale;",
+                "  }",
+                "  succeed();",
                 "}"
             ]
         },
         "asset-pack": "core",
+        "parent": 1
+    },
+    "e52601f9-2ec2-427e-9416-f33c7b42ec7a": {
+        "id": "e52601f9-2ec2-427e-9416-f33c7b42ec7a",
+        "class": "Sequence",
+        "name": "",
+        "options": {},
+        "asset-pack": "core",
         "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
-        "skipped": false
+        "decorators": [
+            "716dcf0a-df2d-481f-b636-d3c72f175ffb"
+        ],
+        "children": [
+            "110de995-8f3c-4583-a8fe-edd9daf1e896",
+            "636b6055-4d1e-439d-9bb2-01522f26ebaa"
+        ]
+    },
+    "716dcf0a-df2d-481f-b636-d3c72f175ffb": {
+        "id": "716dcf0a-df2d-481f-b636-d3c72f175ffb",
+        "class": "WhileCondition",
+        "name": "",
+        "options": {
+            "init": [
+                "() => {",
+                "  notepad.frame=0;",
+                "}"
+            ],
+            "conditional": [
+                "() => {",
+                "    return notepad.frame < notepad.frames;",
+                "}"
+            ]
+        },
+        "asset-pack": "core"
+    },
+    "110de995-8f3c-4583-a8fe-edd9daf1e896": {
+        "id": "110de995-8f3c-4583-a8fe-edd9daf1e896",
+        "class": "ExecuteScript",
+        "name": "",
+        "options": {
+            "exec": [
+                "() => {",
+                "//  console.log(notepad.orbital_values[notepad.frame].x,notepad.orbital_values[notepad.frame].y,notepad.orbital_values[notepad.frame].scale);",
+                "  jibo.animate.setEyePosition(notepad.orbital_values[notepad.frame].x/100,notepad.orbital_values[notepad.frame].y/100);",
+                "  jibo.animate.setEyeScale(notepad.orbital_values[notepad.frame].scale);",
+                "  notepad.frame++;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "e52601f9-2ec2-427e-9416-f33c7b42ec7a"
+    },
+    "636b6055-4d1e-439d-9bb2-01522f26ebaa": {
+        "id": "636b6055-4d1e-439d-9bb2-01522f26ebaa",
+        "class": "Subtree",
+        "name": "",
+        "options": {
+            "behaviorPath": "TimeoutJsSync.bt",
+            "getNotepad": [
+                "() => {",
+                "  return {",
+                "    delay: notepad.delay",
+                "  };",
+                "}"
+            ],
+            "onResult": [
+                "(treeResult) => {",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "e52601f9-2ec2-427e-9416-f33c7b42ec7a"
+    },
+    "4e0ddf18-2df1-4fed-9d3a-298a7c66e8d1": {
+        "id": "4e0ddf18-2df1-4fed-9d3a-298a7c66e8d1",
+        "class": "ExecuteScript",
+        "name": "",
+        "options": {
+            "exec": [
+                "() => {",
+                "  notepad.orbit_count++;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "07902c38-b948-4b62-870e-72ff59bd8784"
     }
 }

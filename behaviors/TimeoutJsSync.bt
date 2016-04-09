@@ -1,0 +1,28 @@
+{
+    "1": {
+        "id": 1,
+        "class": "Sequence",
+        "name": "",
+        "options": {},
+        "children": [
+            "80a7890e-819e-46c4-ab0b-e38facc80c43"
+        ]
+    },
+    "meta": {
+        "version": 1
+    },
+    "80a7890e-819e-46c4-ab0b-e38facc80c43": {
+        "id": "80a7890e-819e-46c4-ab0b-e38facc80c43",
+        "class": "TimeoutJs",
+        "name": "",
+        "options": {
+            "getTime": [
+                "() => {",
+                "    return notepad.delay;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": 1
+    }
+}
