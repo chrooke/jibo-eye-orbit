@@ -1,0 +1,149 @@
+{
+    "1": {
+        "id": 1,
+        "class": "Sequence",
+        "name": "",
+        "asset-pack": "core",
+        "children": [
+            "63a7774a-3a12-450f-aba1-9244c926888a",
+            "366e6af2-f67b-487c-bda5-ceb187960c00",
+            "07902c38-b948-4b62-870e-72ff59bd8784"
+        ],
+        "decorators": [],
+        "options": {}
+    },
+    "meta": {
+        "version": 1
+    },
+    "48dccc45-aaff-499b-814b-e6d9e926b6f6": {
+        "id": "48dccc45-aaff-499b-814b-e6d9e926b6f6",
+        "class": "ExecuteScript",
+        "name": "Set eye position",
+        "options": {
+            "exec": [
+                "() => {",
+                "  jibo.animate.setEyePosition(notepad.x/100,notepad.y/100);",
+                "  jibo.animate.setEyeScale(notepad.scale);",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
+        "skipped": false
+    },
+    "96c2fc17-786f-4c44-8bed-cf3dfc988504": {
+        "id": "96c2fc17-786f-4c44-8bed-cf3dfc988504",
+        "class": "TimeoutJs",
+        "name": "",
+        "options": {
+            "getTime": [
+                "() => {",
+                "//    return notepad.delay;",
+                "return 250;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "07902c38-b948-4b62-870e-72ff59bd8784"
+    },
+    "63a7774a-3a12-450f-aba1-9244c926888a": {
+        "id": "63a7774a-3a12-450f-aba1-9244c926888a",
+        "class": "TimeoutJs",
+        "name": "",
+        "options": {
+            "getTime": [
+                "() => {",
+                "    return 1000;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": 1
+    },
+    "07902c38-b948-4b62-870e-72ff59bd8784": {
+        "id": "07902c38-b948-4b62-870e-72ff59bd8784",
+        "class": "Sequence",
+        "name": "",
+        "options": {},
+        "asset-pack": "core",
+        "parent": 1,
+        "decorators": [
+            "84f8b838-fa54-4600-aa56-f35b5625467e"
+        ],
+        "children": [
+            "c098155a-55d4-4a14-a4c4-9f5e135f810c",
+            "48dccc45-aaff-499b-814b-e6d9e926b6f6",
+            "96c2fc17-786f-4c44-8bed-cf3dfc988504"
+        ]
+    },
+    "84f8b838-fa54-4600-aa56-f35b5625467e": {
+        "id": "84f8b838-fa54-4600-aa56-f35b5625467e",
+        "class": "WhileCondition",
+        "name": "",
+        "options": {
+            "init": [
+                "() => {",
+                "  notepad.orbit_count=-1; //This will go to zero on the first orbit.",
+                "}"
+            ],
+            "conditional": [
+                "() => {",
+                "    return notepad.orbit_count < notepad.orbits;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "skipped": false
+    },
+    "366e6af2-f67b-487c-bda5-ceb187960c00": {
+        "id": "366e6af2-f67b-487c-bda5-ceb187960c00",
+        "class": "ExecuteScript",
+        "name": "Initialize some variables",
+        "options": {
+            "exec": [
+                "() => {",
+                "  // timing",
+                "  notepad.fps = 30;                 // frames per sec",
+                "  notepad.delay = Math.floor(1000/notepad.fps); // approx delay per step to get right fps",
+                "  // parameters for one orbit",
+                "  notepad.period = 1;               // orbit duration in seconds",
+                "  notepad.frames = notepad.period*notepad.fps; // total number of frames in animation",
+                "  notepad.deg_per_frame = 360/notepad.frames; // degrees we move per frame",
+                "  notepad.angle_offset = 270;       //starting angle in the orbit",
+                "  notepad.starting_x = 4;           // starting x",
+                "  notepad.starting_y = 1;           // starting y",
+                "  notepad.starting_size = 2;        // starting size",
+                "  notepad.starting_scale = .2;      // starting scale",
+                "  notepad.raw_angle = 0-notepad.deg_per_frame;  // angle in orbit (without offset)",
+                "  //number of orbits before we quit",
+                "  notepad.orbits = 3;               // number of orbits during the animation",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": 1,
+        "skipped": false
+    },
+    "c098155a-55d4-4a14-a4c4-9f5e135f810c": {
+        "id": "c098155a-55d4-4a14-a4c4-9f5e135f810c",
+        "class": "ExecuteScript",
+        "name": "Initialize some variables",
+        "options": {
+            "exec": [
+                "() => {",
+                "  notepad.raw_angle = (notepad.raw_angle+notepad.deg_per_frame)%360;",
+                "  if (notepad.raw_angle == 0) { notepad.orbit_count++; }  ",
+                "  notepad.angle = notepad.raw_angle+notepad.angle_offset;",
+                "  notepad.x = notepad.starting_x*Math.cos(notepad.angle*Math.PI/180);",
+                "  notepad.y = notepad.starting_y*Math.sin(notepad.angle*Math.PI/180);",
+                "  notepad.size = (notepad.starting_y*2*notepad.starting_size-(notepad.starting_y+notepad.y))/(notepad.starting_y*2*notepad.starting_size);",
+                "  notepad.scale = notepad.size * notepad.starting_scale;",
+                "  console.log(notepad.angle,notepad.x,notepad.y,notepad.size,notepad.scale);",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
+        "skipped": false
+    }
+}
