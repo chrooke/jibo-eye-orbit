@@ -33,13 +33,19 @@
     },
     "96c2fc17-786f-4c44-8bed-cf3dfc988504": {
         "id": "96c2fc17-786f-4c44-8bed-cf3dfc988504",
-        "class": "TimeoutJs",
-        "name": "",
+        "class": "Subtree",
+        "name": "Delay for frame rate",
         "options": {
-            "getTime": [
+            "behaviorPath": "TimeoutJsSync.bt",
+            "getNotepad": [
                 "() => {",
-                "//    return notepad.delay;",
-                "return 250;",
+                "  return {",
+                "    delay: notepad.delay",
+                "  };",
+                "}"
+            ],
+            "onResult": [
+                "(treeResult) => {",
                 "}"
             ]
         },
@@ -127,7 +133,7 @@
     "c098155a-55d4-4a14-a4c4-9f5e135f810c": {
         "id": "c098155a-55d4-4a14-a4c4-9f5e135f810c",
         "class": "ExecuteScript",
-        "name": "Initialize some variables",
+        "name": "Update variables",
         "options": {
             "exec": [
                 "() => {",
@@ -138,7 +144,7 @@
                 "  notepad.y = notepad.starting_y*Math.sin(notepad.angle*Math.PI/180);",
                 "  notepad.size = (notepad.starting_y*2*notepad.starting_size-(notepad.starting_y+notepad.y))/(notepad.starting_y*2*notepad.starting_size);",
                 "  notepad.scale = notepad.size * notepad.starting_scale;",
-                "  console.log(notepad.angle,notepad.x,notepad.y,notepad.size,notepad.scale);",
+                "//  console.log(notepad.angle,notepad.x,notepad.y,notepad.size,notepad.scale);",
                 "}"
             ]
         },
