@@ -31,27 +31,6 @@
         "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
         "skipped": false
     },
-    "96c2fc17-786f-4c44-8bed-cf3dfc988504": {
-        "id": "96c2fc17-786f-4c44-8bed-cf3dfc988504",
-        "class": "Subtree",
-        "name": "Delay for frame rate",
-        "options": {
-            "behaviorPath": "TimeoutJsSync.bt",
-            "getNotepad": [
-                "() => {",
-                "  return {",
-                "    delay: notepad.delay",
-                "  };",
-                "}"
-            ],
-            "onResult": [
-                "(treeResult) => {",
-                "}"
-            ]
-        },
-        "asset-pack": "core",
-        "parent": "07902c38-b948-4b62-870e-72ff59bd8784"
-    },
     "63a7774a-3a12-450f-aba1-9244c926888a": {
         "id": "63a7774a-3a12-450f-aba1-9244c926888a",
         "class": "TimeoutJs",
@@ -79,7 +58,7 @@
         "children": [
             "c098155a-55d4-4a14-a4c4-9f5e135f810c",
             "48dccc45-aaff-499b-814b-e6d9e926b6f6",
-            "96c2fc17-786f-4c44-8bed-cf3dfc988504"
+            "44b68162-fbf7-44e6-8e20-778f86ab4bf7"
         ]
     },
     "84f8b838-fa54-4600-aa56-f35b5625467e": {
@@ -151,5 +130,19 @@
         "asset-pack": "core",
         "parent": "07902c38-b948-4b62-870e-72ff59bd8784",
         "skipped": false
+    },
+    "44b68162-fbf7-44e6-8e20-778f86ab4bf7": {
+        "id": "44b68162-fbf7-44e6-8e20-778f86ab4bf7",
+        "class": "TimeoutJs",
+        "name": "",
+        "options": {
+            "getTime": [
+                "() => {",
+                "    return notepad.delay;",
+                "}"
+            ]
+        },
+        "asset-pack": "core",
+        "parent": "07902c38-b948-4b62-870e-72ff59bd8784"
     }
 }
